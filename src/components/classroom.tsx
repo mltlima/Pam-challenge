@@ -5,35 +5,34 @@ import InputField from "./inputField";
 import ButtonForm from "./buttom";
 import userApi from "../services/userApi";
 
-interface TransferInput {
+interface ClassroomInput {
     token: string;
     updatePage: number;
     setUpdatePage: React.Dispatch<React.SetStateAction<number>>;
 }
     
 
-export default function Transfer(Props: TransferInput) {
+export default function Classroom(Props: ClassroomInput) {
     const { token, updatePage, setUpdatePage } = Props;
     const { setAlert } = useAlert();
     const [formsData, setFormsData] = useState({
-        toUser: "",
-        amount: 0,
+        teacherId: 0,
     });
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement> ) {
         event.preventDefault();
         setAlert(null);
 
-        if(!formsData?.toUser || !formsData?.amount) {
+        if(!formsData?.teacherId) {
             setAlert({ type: "error", text: "All fields are required" });
             return;
         }
 
         try {
-            const { toUser, amount } = formsData;
-            await userApi.transfer( token, { toUser, amount } );
+            const { teacherId } = formsData;
+            await userApi.createClassroom( token, teacherId );
             setUpdatePage(updatePage + 1);
-            setAlert({ type: "success", text: "Transfer successful" });
+            setAlert({ type: "success", text: "classroom created" });
         } catch (error: any) {
             if(error.response) {
                 setAlert({ type: "error", text: error.response.data.message });
@@ -53,20 +52,13 @@ export default function Transfer(Props: TransferInput) {
         <>
             <form onSubmit={handleSubmit}>
                 <InputField
-                    label="Amount"
-                    name="amount"
+                    label="TeacherId"
+                    name="TeacherId"
                     type="number"
-                    value={formsData.amount}
+                    value={formsData.teacherId}
                     onChange={handleInputChange}
                 />
-                <InputField
-                    label="To User"
-                    name="toUser"
-                    type="text"
-                    value={formsData.toUser}
-                    onChange={handleInputChange}
-                />
-                <ButtonForm text='Transfer' loading={false}/>
+                <ButtonForm text='Create Classroom' loading={false}/>
             </form> 
         </>
     );

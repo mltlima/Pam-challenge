@@ -15,24 +15,16 @@ function signIn(userSignIn: User){
     return axios.post(`${url}/signin`, userSignIn);
 }
 
-function getBalance(token: string): Promise<any>{
-    return axios.get(`${url}/accounts/balance`, {
+function getClassrooms(token: string): Promise<any>{
+    return axios.get(`${url}/classroom`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
     });
 }
 
-function transfer(token: string, transferData: any): Promise<any>{
-    return axios.post(`${url}/accounts/transfer`, transferData, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-}
-
-function getTransactions(token: string): Promise<any>{
-    return axios.get(`${url}/accounts/history`, {
+function createClassroom(token: string, teacherId: number): Promise<any>{
+    return axios.post(`${url}/classroom`, teacherId, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -42,9 +34,8 @@ function getTransactions(token: string): Promise<any>{
 const userApi = {
     signUp,
     signIn,
-    getBalance,
-    transfer,
-    getTransactions
+    getClassrooms,
+    createClassroom
 }
   
 export default userApi;

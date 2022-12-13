@@ -5,13 +5,12 @@ import { useEffect, useState } from 'react';
 import Header from "../components/header";
 import useAuth from "../hooks/useAuth";
 import userApi from "../services/userApi";
-import Transfer from "../components/transfer";
-import Transactions from "../components/transactions";
+import Transfer from "../components/classroom";
+import Exam from "../components/exam";
 
 export default function Dashboard() {
     const { token } = useAuth();
     const [username, setUsername] = useState('');
-    const [balance, setBalance] = useState(0);
     const [updatePage, setUpdatePage] = useState(0);
 
     useEffect(() => {
@@ -20,10 +19,7 @@ export default function Dashboard() {
     }, [token]);
 
     useEffect(() => {
-        const promise = userApi.getBalance(token);
-        promise.then((response) => {
-            setBalance(response.data.balance);
-        });
+        
     }, [updatePage]);
 
     return(
@@ -33,7 +29,7 @@ export default function Dashboard() {
                 <CentralBox>
                     <TitleDiv>
                         <Typography sx={{ marginBottom: "16px" }} variant="h6" component={"h1"}>
-                            Welcome back,
+                            Welcome back
                         </Typography>
                         <Typography sx={{ marginBottom: "16px", marginLeft: "25px" }} variant="h4" component={"h1"}>
                             {username}
@@ -42,15 +38,15 @@ export default function Dashboard() {
                     <ContainerBox>
                         <PaperBox>
                             <Typography sx={{ marginBottom: "16px", color: "white" }} variant="h6" component={"h1"}>
-                                Your balance: ${balance}
+                                Classroom
                             </Typography>
                             <Transfer token={token} updatePage={updatePage} setUpdatePage={setUpdatePage}/>
                         </PaperBox>
                         <PaperBox sx={{overflow: "scroll"}}>
                             <Typography sx={{ marginBottom: "16px", color: "white" }} variant="h6" component={"h1"}>
-                                Transactions
+                                Exam
                             </Typography>
-                            <Transactions token={token} updatePage={updatePage} setUpdatePage={setUpdatePage}/>
+                            <Exam token={token} updatePage={updatePage} setUpdatePage={setUpdatePage}/>
                         </PaperBox>
                     </ContainerBox>
                 </CentralBox>
